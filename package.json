@@ -4,11 +4,16 @@
   "description": "Dug - A digital friend.",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src"
   },
   "author": "buidangkhoa2602@gmail.com",
   "license": "MIT",
   "dependencies": {
     "jest": "^25.1.0"
+  },
+  "devDependencies": {
+    "eslint-config-node": "^4.0.0",
+    "mockdate": "^2.0.5"
   }
 }

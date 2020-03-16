@@ -1,3 +1,1 @@
-module.exports = (phase) => {
-  return phase
-}
+module.exports = (phase) => phase

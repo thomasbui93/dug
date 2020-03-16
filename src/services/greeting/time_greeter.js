@@ -6,13 +6,13 @@ module.exports = () => {
     return __("Good morning!");
   }
 
-  if (currentHour > 11 && currentHour < 1) {
-    return __("It's noon time.");
+  if (currentHour > 11 && currentHour <= 13) {
+    return __("It's noon time!");
   }
 
-  if (currentHour < 17 && currentHour > 11) {
+  if (currentHour < 17 && currentHour > 13) {
     return __("Good afternoon!");
   }
 
-  return __("Good evening!");
+  return __("Good evening! It seems that you're doing homework!");
 }

@@ -1,5 +1,5 @@
 const timeGreeter = require('./time_greeter')
 
-module.exports = () => {
-  return timeGreeter();
-}
+module.exports = () => ({
+    greeter: timeGreeter()
+  })

@@ -1,0 +1,14 @@
+{
+  "name": "dug",
+  "version": "0.0.1",
+  "description": "Dug - A digital friend.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "buidangkhoa2602@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "jest": "^25.1.0"
+  }
+}

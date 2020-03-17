@@ -3,17 +3,34 @@
   "version": "0.0.1",
   "description": "Dug - A digital friend.",
   "main": "src/index.js",
+  "engines": {
+    "node": ">= 10"
+  },
+  "engineStrict": true,
   "scripts": {
     "test": "jest",
-    "lint": "eslint src"
+    "lint": "eslint ./src/** && eslint ./test/** --env jest",
+    "start": "node src/index.js"
   },
   "author": "buidangkhoa2602@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "jest": "^25.1.0"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
   },
   "devDependencies": {
-    "eslint-config-node": "^4.0.0",
-    "mockdate": "^2.0.5"
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.2",
+    "jest": "^25.1.0",
+    "mockdate": "^2.0.5",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }

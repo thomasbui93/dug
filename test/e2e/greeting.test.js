@@ -7,6 +7,10 @@ describe('/api/greeting endpoint', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual(expect.objectContaining({
       greeter: expect.any(String),
+      quote: expect.objectContaining({
+        message: expect.any(String),
+        author: expect.any(String),
+      }),
     }))
   })
 })

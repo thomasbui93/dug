@@ -1,6 +1,7 @@
 const cheerio = require('cheerio')
 const fetch = require('node-fetch')
 const { setCache, getCache } = require('../cache')
+const format = require('./format')
 
 const scrapLink = (html) => {
   const regexSearch = RegExp(/href="(.*?)"/g)
@@ -11,8 +12,7 @@ const scrapLink = (html) => {
 const getPageElement = async (url, ...rest) => {
   const request = await fetch(url)
   const pageContent = await request.text()
-  const $ = cheerio.load(pageContent)
- 
+  const $ = cheerio.load(pageContent) 
   return rest.length === 1 ? $(rest[0]) : rest.map(selector => $(selector))
 }
 
@@ -69,7 +69,7 @@ module.exports = async (searchKey) => {
     const poem = await getPoemContent(randomLink)
 
     return {
-      poem,
+      poem: format(poem),
       link: randomLink
     }
   } catch (err) {

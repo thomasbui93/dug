@@ -1,9 +1,9 @@
 const MockDate = require('mockdate');
-const greeter = require('../../src/services/greeting/time_greeter');
+const greeter = require('../../src/services/greeting/time_greeter')
 
 test('it would say hello to you!', () => {
-  expect(typeof greeter()).toBe('string');
-});
+  expect(typeof greeter()).toBe('string')
+})
 
 describe('Greeting depends on time of the day', () => {
   afterEach(() => {

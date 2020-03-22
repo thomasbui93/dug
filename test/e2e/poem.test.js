@@ -6,8 +6,8 @@ describe('/api/poem endpoint', () => {
     const response = await request(app).get('/api/poem')
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual(expect.objectContaining({
-      poem: expect.any(String),
+      poem: expect.any(Array),
       link: expect.any(String),
     }))
-  })
+  }, 10000)
 })

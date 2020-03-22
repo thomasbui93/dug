@@ -10,8 +10,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint ./src/** && eslint ./test/** --env jest",
-    "start": "nodemon src/index.js",
-    "prod": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
     "benchmark": "node test/benchmark.js"
   },
   "author": "buidangkhoa2602@gmail.com",

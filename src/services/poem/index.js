@@ -3,6 +3,8 @@ const fetch = require('node-fetch')
 const { setCache, getCache } = require('../cache')
 const format = require('./format')
 
+const CACHE_TLL = 24 * 1000 * 60 * 60 // 24 hours
+
 const scrapLink = (html) => {
   const regexSearch = RegExp(/href="(.*?)"/g)
   const matches = regexSearch.exec(html)
@@ -18,7 +20,7 @@ const getPageElement = async (url, ...rest) => {
 
 const getMainPage = async (searchTerm) => {
   try {
-    const cached = getCache(searchTerm)
+    const cached = await getCache(searchTerm)
     if (cached) return cached
 
     const searchUrl = `https://www.thivien.net/qsearch.xml.php?Core=author&Field=Name&Value=${encodeURI(searchTerm)}&Page=0`
@@ -26,7 +28,7 @@ const getMainPage = async (searchTerm) => {
     const body = await request.text()
     const result = scrapLink(body)
 
-    const link = setCache(searchTerm, result, 1000 * 60 * 60)
+    const link = await setCache(searchTerm, result, CACHE_TLL)
     return link
   } catch (err) {
     return false
@@ -35,12 +37,12 @@ const getMainPage = async (searchTerm) => {
 
 const getAllPoemLinks = async (mainPage) => {
   if (!mainPage) throw Error('Missing URL for fetching all poem')
-  const cached = getCache(mainPage)
+  const cached = await getCache(mainPage)
   if (cached) return cached
 
   const linkDOMs = await getPageElement(mainPage, '.poem-group-list li a')
   const links = linkDOMs.map((index, link) => link.attribs.href)
-  return setCache(mainPage, links, 1000 * 60 * 60)
+  return setCache(mainPage, links, CACHE_TLL)
 }
 
 const getRandomPoem = (poems) => {
@@ -52,10 +54,10 @@ const getRandomPoem = (poems) => {
 const getPoemContent = async (poemUrl) => {
   try {
     if (!poemUrl) throw Error('Missing the url for fetching a poem')
-    const cached = getCache(poemUrl)
+    const cached = await getCache(poemUrl)
     if (cached) return cached
     const poem = await getPageElement(poemUrl, '.poem-view-separated')
-    return setCache(poemUrl, poem.html(), 1000 * 60 * 60)
+    return setCache(poemUrl, poem.html(), CACHE_TLL)
   } catch (err) {
     return false
   }

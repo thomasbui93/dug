@@ -44,6 +44,7 @@ const getAllPoemLinks = async (mainPage) => {
 }
 
 const getRandomPoem = (poems) => {
+  if (poems.length === 0) return false
   const randomLink = Math.floor((Math.random() * poems.length))
   return `${process.env.BASE_POEM_URL}/${poems[randomLink]}`
 }
@@ -66,12 +67,14 @@ module.exports = async (searchTerm = process.env.AUTHOR) => {
     const poems = await getAllPoemLinks(mainPage)
     const randomLink = getRandomPoem(poems)
     const poem = await getPoemContent(randomLink)
-
     return {
-      poem: format(poem),
+      poem: poem ? format(poem) : [],
       link: randomLink,
     }
   } catch (err) {
-    return false
+    return {
+      poem: [],
+      link: false,
+    }
   }
 }

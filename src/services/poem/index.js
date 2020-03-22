@@ -12,8 +12,8 @@ const scrapLink = (html) => {
 const getPageElement = async (url, ...rest) => {
   const request = await fetch(url)
   const pageContent = await request.text()
-  const $ = cheerio.load(pageContent) 
-  return rest.length === 1 ? $(rest[0]) : rest.map(selector => $(selector))
+  const $ = cheerio.load(pageContent)
+  return rest.length === 1 ? $(rest[0]) : rest.map((selector) => $(selector))
 }
 
 const getMainPage = async (searchTerm) => {
@@ -60,9 +60,8 @@ const getPoemContent = async (poemUrl) => {
   }
 }
 
-module.exports = async (searchKey) => {
+module.exports = async (searchTerm = process.env.AUTHOR) => {
   try {
-    const searchTerm = searchKey ? searchKey : process.env.AUTHOR
     const mainPage = await getMainPage(searchTerm)
     const poems = await getAllPoemLinks(mainPage)
     const randomLink = getRandomPoem(poems)
@@ -70,7 +69,7 @@ module.exports = async (searchKey) => {
 
     return {
       poem: format(poem),
-      link: randomLink
+      link: randomLink,
     }
   } catch (err) {
     return false

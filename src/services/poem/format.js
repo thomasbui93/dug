@@ -8,11 +8,11 @@ module.exports = (poem) => {
   const response = []
   titles.each(function (index) {
     response[index] = {
-      title: $(this).text()
+      title: $(this).text(),
     }
   })
   contents.each(function (index) {
-    response[index]['content'] = htmlToText.fromString($(this).html())
+    response[index].content = htmlToText.fromString($(this).html())
   })
   return response
 }

@@ -4,7 +4,7 @@ exports.setCache = (key, data, ttl) => {
   caches[key] = {
     data,
     ttl,
-    timestamp: new Date()
+    timestamp: new Date(),
   }
   return data
 }
@@ -14,13 +14,9 @@ exports.getCache = (key) => {
     const cacheData = caches[key]
     if (typeof cacheData === 'undefined') return undefined
     const diff = new Date() - cacheData.timestamp - cacheData.ttl
-    if (diff > 0) {
-      return undefined
-    } else {
-      return cacheData.data
-    }
+    return diff > 0 ? undefined : cacheData.data
   } catch (err) {
-    console.log(err)
+    return undefined
   }
 }
 

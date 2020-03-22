@@ -10,14 +10,18 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint ./src/** && eslint ./test/** --env jest",
-    "start": "node src/index.js"
+    "start": "nodemon src/index.js",
+    "prod": "node src/index.js"
   },
   "author": "buidangkhoa2602@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "node-fetch": "^2.6.0"
+    "html-to-text": "^5.1.1",
+    "node-fetch": "^2.6.0",
+    "puppeteer": "^2.1.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
@@ -26,6 +30,7 @@
     "eslint-plugin-jest": "^23.8.2",
     "jest": "^25.1.0",
     "mockdate": "^2.0.5",
+    "nodemon": "^2.0.2",
     "supertest": "^4.0.2"
   },
   "jest": {

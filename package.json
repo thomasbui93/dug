@@ -12,7 +12,7 @@
     "lint": "eslint ./src/** && eslint ./test/** --env jest",
     "start": "nodemon src/index.js",
     "prod": "node src/index.js",
-    "benchmark": "npm run prod && autocannon http://localhost:3000/api/poem"
+    "benchmark": "node test/benchmark.js"
   },
   "author": "buidangkhoa2602@gmail.com",
   "license": "MIT",

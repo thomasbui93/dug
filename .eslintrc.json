@@ -16,6 +16,8 @@
   },
   "plugins": ["jest"],
   "rules": {
-    "semi": 0
+    "semi": 0,
+    "no-extra-semi": 2,
+    "no-extra-boolean-cast": 0
   }
 }

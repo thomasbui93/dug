@@ -3,6 +3,8 @@ const fetch = require('node-fetch')
 const { setCache, getCache } = require('../cache')
 const format = require('./format')
 
+const CACHE_TLL = 24 * 1000 * 60 * 60 // 24 hours
+
 const scrapLink = (html) => {
   const regexSearch = RegExp(/href="(.*?)"/g)
   const matches = regexSearch.exec(html)
@@ -18,29 +20,32 @@ const getPageElement = async (url, ...rest) => {
 
 const getMainPage = async (searchTerm) => {
   try {
-    const cached = getCache(searchTerm)
-    if (cached) return cached
+    const cached = await getCache(searchTerm)
+    if (!!cached) return cached
 
     const searchUrl = `https://www.thivien.net/qsearch.xml.php?Core=author&Field=Name&Value=${encodeURI(searchTerm)}&Page=0`
     const request = await fetch(searchUrl)
     const body = await request.text()
     const result = scrapLink(body)
 
-    const link = setCache(searchTerm, result, 1000 * 60 * 60)
-    return link
+    await setCache(searchTerm, result, CACHE_TLL)
+    return result
   } catch (err) {
     return false
   }
 }
 
-const getAllPoemLinks = async (mainPage) => {
+const getAllPoemLinks = async (searchTerm) => {
+  const mainPage = await getMainPage(searchTerm)
   if (!mainPage) throw Error('Missing URL for fetching all poem')
-  const cached = getCache(mainPage)
-  if (cached) return cached
+  const cached = await getCache(mainPage)
+
+  if (!!cached) return cached
 
   const linkDOMs = await getPageElement(mainPage, '.poem-group-list li a')
-  const links = linkDOMs.map((index, link) => link.attribs.href)
-  return setCache(mainPage, links, 1000 * 60 * 60)
+  const links = linkDOMs.map((index, link) => link.attribs.href).toArray()
+  await setCache(mainPage, links, CACHE_TLL)
+  return links
 }
 
 const getRandomPoem = (poems) => {
@@ -52,10 +57,12 @@ const getRandomPoem = (poems) => {
 const getPoemContent = async (poemUrl) => {
   try {
     if (!poemUrl) throw Error('Missing the url for fetching a poem')
-    const cached = getCache(poemUrl)
-    if (cached) return cached
+    const cached = await getCache(poemUrl)
+    if (!!cached) return cached
     const poem = await getPageElement(poemUrl, '.poem-view-separated')
-    return setCache(poemUrl, poem.html(), 1000 * 60 * 60)
+    const html = poem.html()
+    await setCache(poemUrl, html, CACHE_TLL)
+    return html
   } catch (err) {
     return false
   }
@@ -63,8 +70,7 @@ const getPoemContent = async (poemUrl) => {
 
 module.exports = async (searchTerm = process.env.AUTHOR) => {
   try {
-    const mainPage = await getMainPage(searchTerm)
-    const poems = await getAllPoemLinks(mainPage)
+    const poems = await getAllPoemLinks(searchTerm)
     const randomLink = getRandomPoem(poems)
     const poem = await getPoemContent(randomLink)
     return {

@@ -9,9 +9,11 @@
   "engineStrict": true,
   "scripts": {
     "test": "jest",
-    "lint": "eslint ./src/** && eslint ./test/** --env jest",
+    "lint": "npm run lint-src && npm run lint-test",
+    "lint-src": "eslint ./src/**",
+    "lint-test": "eslint --env jest ./test/**",
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
+    "start": "NODE_ENV=production node src/index.js",
     "benchmark": "node test/benchmark.js"
   },
   "author": "buidangkhoa2602@gmail.com",
@@ -22,6 +24,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "html-to-text": "^5.1.1",
+    "memjs": "^1.2.2",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {

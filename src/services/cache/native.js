@@ -20,7 +20,10 @@ const getCache = (key) => {
   }
 }
 
+const healthCheck = () => true
+
 module.exports = {
   setCache,
   getCache,
+  healthCheck,
 }

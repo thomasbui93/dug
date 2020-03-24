@@ -21,6 +21,7 @@ const clientSetCache = (key, data, ttl) => new Promise((resolve, reject) => {
     resolve(val)
   })
 })
+
 const clientGetCache = (key) => new Promise((resolve, reject) => {
   client.get(key, (err, val) => {
     if (err) {
@@ -55,7 +56,15 @@ const getCache = async (key) => {
   }
 }
 
+const healthCheck = async () => {
+  await setCache('STATUS', '1')
+  const status = await getCache('STATUS')
+
+  return status === '1'
+}
+
 module.exports = {
   setCache,
   getCache,
+  healthCheck,
 }

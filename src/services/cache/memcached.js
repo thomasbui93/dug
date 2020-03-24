@@ -1,13 +1,41 @@
 const { Client } = require('memjs')
-const util = require('util')
 
-const client = Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
-  username: process.env.MEMCACHEDCLOUD_USERNAME,
-  password: process.env.MEMCACHEDCLOUD_PASSWORD,
+const client = Client.create(process.env.MEMCACHIER_SERVERS, {
+  failover: true,
+  failoverTime: 30,
+  retries: 2,
+  retry_delay: 0.2,
+  expires: 0,
+  logger: console,
+  timeout: 1.0,
+  conntimeout: 2.0,
+  keepAlive: true,
+  keepAliveDelay: 30,
+  username: process.env.MEMCACHIER_USERNAME,
+  password: process.env.MEMCACHIER_PASSWORD,
 })
 
-const clientSetCache = util.promisify(client.set)
-const clientGetCache = util.promisify(client.get)
+const clientSetCache = (key, data, ttl) => new Promise((resolve, reject) => {
+  client.set(key, JSON.stringify(data), { expires: ttl }, (err, val) => {
+    if (err) reject(err)
+    resolve(val)
+  })
+})
+const clientGetCache = (key) => new Promise((resolve, reject) => {
+  client.get(key, (err, val) => {
+    if (err) {
+      reject(err)
+    } else {
+      const data = val ? val.toString() : val
+      try {
+        const parsed = JSON.parse(data)
+        resolve(parsed)
+      } catch (error) {
+        resolve(data)
+      }
+    }
+  })
+})
 
 const setCache = async (key, data, ttl) => {
   try {

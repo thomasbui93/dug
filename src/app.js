@@ -1,8 +1,8 @@
 const express = require('express')
 const { config } = require('dotenv')
-const router = require('./web')
 
 config()
+const router = require('./web')
 
 const app = express()
 router(app)

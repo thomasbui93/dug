@@ -2,6 +2,9 @@ const cheerio = require('cheerio')
 const fetch = require('node-fetch')
 const { setCache, getCache } = require('../cache')
 const format = require('./format')
+const log = require('../logging').child({
+  tag: 'greeting service',
+})
 
 const CACHE_TLL = 24 * 1000 * 60 * 60 // 24 hours
 
@@ -31,21 +34,31 @@ const getMainPage = async (searchTerm) => {
     await setCache(searchTerm, result, CACHE_TLL)
     return result
   } catch (err) {
+    log.error(err.message, {
+      stack: err.stack,
+    })
     return false
   }
 }
 
 const getAllPoemLinks = async (searchTerm) => {
-  const mainPage = await getMainPage(searchTerm)
-  if (!mainPage) throw Error('Missing URL for fetching all poem')
-  const cached = await getCache(mainPage)
+  try {
+    const mainPage = await getMainPage(searchTerm)
+    if (!mainPage) throw Error('Missing URL for fetching all poem')
+    const cached = await getCache(mainPage)
 
-  if (!!cached) return cached
+    if (!!cached) return cached
 
-  const linkDOMs = await getPageElement(mainPage, '.poem-group-list li a')
-  const links = linkDOMs.map((index, link) => link.attribs.href).toArray()
-  await setCache(mainPage, links, CACHE_TLL)
-  return links
+    const linkDOMs = await getPageElement(mainPage, '.poem-group-list li a')
+    const links = linkDOMs.map((index, link) => link.attribs.href).toArray()
+    await setCache(mainPage, links, CACHE_TLL)
+    return links
+  } catch (err) {
+    log.error(err.message, {
+      stack: err.stack,
+    })
+    return []
+  }
 }
 
 const getRandomPoem = (poems) => {
@@ -64,6 +77,9 @@ const getPoemContent = async (poemUrl) => {
     await setCache(poemUrl, html, CACHE_TLL)
     return html
   } catch (err) {
+    log.error(err.message, {
+      stack: err.stack,
+    })
     return false
   }
 }
@@ -78,6 +94,9 @@ module.exports = async (searchTerm = process.env.AUTHOR) => {
       link: randomLink,
     }
   } catch (err) {
+    log.error(err.message, {
+      stack: err.stack,
+    })
     return {
       poem: [],
       link: false,

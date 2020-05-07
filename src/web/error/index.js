@@ -2,7 +2,11 @@ const log = require('../../services/logging').child({
   tag: 'uncaught',
 })
 
-module.exports = (err, req, res) => {
+module.exports = (err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err)
+  }
+
   log.error('Uncaught exception', {
     request: req.url,
     method: req.method,
@@ -10,7 +14,8 @@ module.exports = (err, req, res) => {
     stack: err.stack,
   })
 
-  res.status(500).send({
+  res.status(500)
+  res.send({
     error: true,
   })
 }

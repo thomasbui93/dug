@@ -72,8 +72,12 @@ const getPoemContent = async (poemUrl) => {
     if (!poemUrl) throw Error('Missing the url for fetching a poem')
     const cached = await getCache(poemUrl)
     if (!!cached) return cached
-    const poem = await getPageElement(poemUrl, '.poem-view-separated')
-    const html = poem.html()
+    let poem = await getPageElement(poemUrl, '.poem-view-separated')
+    let html = poem.html()
+    if (!html) {
+      poem = await getPageElement(poemUrl, '.page-header h1', '.poem-content > p')
+      html = poem.map((p, index) => `<div class="p-fragment-${index+1}">${p.html()}</div>`).join('')
+    }
     await setCache(poemUrl, html, CACHE_TLL)
     return html
   } catch (err) {

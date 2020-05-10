@@ -1,5 +1,5 @@
 module.exports = class CircuitBreaker {
-  constructor(breakPoint = 10, autoTurnonTimeout = 3000) {
+  constructor(breakPoint = 10, autoTurnonTimeout = 15 * 60 * 000) {
     this.breakPoint = breakPoint
     this.autoTurnonTimeout = autoTurnonTimeout
     this.failureCount = 0

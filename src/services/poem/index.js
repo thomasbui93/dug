@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 const { setCache, getCache } = require('../cache')
 const format = require('./format')
 const log = require('../logging').child({
-  tag: 'greeting service',
+  tag: 'poem service',
 })
 
 const CACHE_TLL = 24 * 1000 * 60 * 60 // 24 hours
@@ -27,7 +27,9 @@ const getMainPage = async (searchTerm) => {
     if (!!cached) return cached
 
     const searchUrl = `https://www.thivien.net/qsearch.xml.php?Core=author&Field=Name&Value=${encodeURI(searchTerm)}&Page=0`
-    const request = await fetch(searchUrl)
+    const request = await fetch(searchUrl, {
+      timeout: 10000
+    })
     const body = await request.text()
     const result = scrapLink(body)
 

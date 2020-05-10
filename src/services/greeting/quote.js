@@ -4,7 +4,7 @@ const log = require('../logging').child({
   tag: 'quoteService',
 })
 
-const quoteCircuitBreaker = new CircuitBreaker()
+const quoteCircuitBreaker = new CircuitBreaker(10, 15 * 60 * 1000)
 
 module.exports = async () => {
   if (typeof process.env.QUOTE_URL !== 'string') {

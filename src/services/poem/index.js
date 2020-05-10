@@ -28,7 +28,7 @@ const getMainPage = async (searchTerm) => {
 
     const searchUrl = `https://www.thivien.net/qsearch.xml.php?Core=author&Field=Name&Value=${encodeURI(searchTerm)}&Page=0`
     const request = await fetch(searchUrl, {
-      timeout: 10000
+      timeout: 10000,
     })
     const body = await request.text()
     const result = scrapLink(body)
@@ -78,7 +78,7 @@ const getPoemContent = async (poemUrl) => {
     let html = poem.html()
     if (!html) {
       poem = await getPageElement(poemUrl, '.page-header h1', '.poem-content > p')
-      html = poem.map((p, index) => `<div class="p-fragment-${index+1}">${p.html()}</div>`).join('')
+      html = poem.map((p, index) => `<div class="p-fragment-${index + 1}">${p.html()}</div>`).join('')
     }
     await setCache(poemUrl, html, CACHE_TLL)
     return html

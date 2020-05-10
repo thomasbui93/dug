@@ -3,6 +3,7 @@ const CircuitBreaker = require('../../helpers/circuit_breaker')
 const log = require('../logging').child({
   tag: 'quoteService',
 })
+
 const quoteCircuitBreaker = new CircuitBreaker()
 
 module.exports = async () => {
@@ -17,12 +18,12 @@ module.exports = async () => {
 
   try {
     if (quoteCircuitBreaker.cutCheck()) {
-      log.info(`Failure exceeded threshold, retry in ${quoteCircuitBreaker.autoTurnonTimeout/1000} seconds.`)
+      log.info(`Failure exceeded threshold, retry in ${quoteCircuitBreaker.autoTurnonTimeout / 1000} seconds.`)
       return faultMessage
     }
 
     const response = await fetch(process.env.QUOTE_URL, {
-      timeout: 3000
+      timeout: 3000,
     })
     const json = await response.json()
     return {

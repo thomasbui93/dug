@@ -11,7 +11,7 @@ module.exports = class CircuitBreaker {
     if (isBroken) {
       if (this.resetTimer === null) {
         const self = this
-        this.resetTimer = setTimeout(()=> {
+        this.resetTimer = setTimeout(() => {
           self.failureCount = 0
           clearTimeout(self.resetTimer)
           self.resetTimer = null
@@ -22,6 +22,8 @@ module.exports = class CircuitBreaker {
   }
 
   heat() {
-    this.failureCount < this.breakPoint ?  this.failureCount ++ : this.failureCount
+    if (this.failureCount < this.breakPoint) {
+      this.failureCount += 1
+    }
   }
 }

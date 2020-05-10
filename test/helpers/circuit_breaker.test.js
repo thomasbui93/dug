@@ -2,7 +2,7 @@ const CircuitBreaker = require('../../src/helpers/circuit_breaker')
 
 jest.useFakeTimers()
 
-describe('CircuitBreaker heat method', function () {
+describe('CircuitBreaker heat method', () => {
   describe('when failureCount is less than breakPoint', () => {
     it('increase one', () => {
       const circuit = new CircuitBreaker()
@@ -34,7 +34,7 @@ describe('CircuitBreaker heat method', function () {
   })
 })
 
-describe('CircuitBreaker cutCheck method', function () {
+describe('CircuitBreaker cutCheck method', () => {
   describe('when failureCount is less than breakPoint', () => {
     it('return false state', () => {
       const circuit = new CircuitBreaker()

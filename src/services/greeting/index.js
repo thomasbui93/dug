@@ -17,8 +17,8 @@ module.exports = async () => {
       stack: err.stack,
     })
     return {
-      greeter: false,
-      quote: false,
+      greeter: '',
+      quote: '',
     }
   }
 }

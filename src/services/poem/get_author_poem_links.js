@@ -3,6 +3,7 @@ const { scrapLink, getPageElement } = require('../../helpers/crawler')
 const log = require('../logging').child({
   tag: 'poem service',
 })
+const { setCache, getCache } = require('../cache')
 
 const getMainPage = async (searchTerm) => {
   try {
@@ -23,6 +24,10 @@ const getMainPage = async (searchTerm) => {
 
 module.exports = async (searchTerm) => {
   try {
+    const cacheKey = `poem_list:${searchTerm}`
+    const cache = await getCache(cacheKey)
+    if (!!cache) return cache
+
     const mainPage = await getMainPage(searchTerm)
     if (!mainPage) throw Error('Missing URL for fetching all poem')
 
@@ -35,6 +40,8 @@ module.exports = async (searchTerm) => {
         content: links,
       }
     })
+
+    await setCache(cacheKey, content)
 
     return content
   } catch (err) {

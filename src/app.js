@@ -7,7 +7,7 @@ const router = require('./web')
 
 module.exports = async () => {
   config()
-  mongoSetup()
+  await mongoSetup()
 
   const app = express()
   router(app)

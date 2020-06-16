@@ -1,5 +1,7 @@
 const { Client } = require('memjs')
 
+const CACHE_TLL = 24 * 1000 * 60 * 60
+
 const client = Client.create(process.env.MEMCACHIER_SERVERS, {
   failover: true,
   failoverTime: 30,
@@ -38,7 +40,7 @@ const clientGetCache = (key) => new Promise((resolve, reject) => {
   })
 })
 
-const setCache = async (key, data, ttl) => {
+const setCache = async (key, data, ttl = CACHE_TLL) => {
   try {
     await clientSetCache(key, data, { expires: ttl })
     return data

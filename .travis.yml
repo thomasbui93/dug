@@ -9,6 +9,7 @@ node_js:
 
 services:
   - mongodb
+  - redis
 
 script:
   - cp .env.example .env

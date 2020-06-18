@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
     res.json({
       cacheProvider: cache,
       status: 'ok',
-      mongo: connection.readyState === 1 ? 'ok' : 'failed',
+      mongo: connection.readyState === 1 ? 'ok' : 'failed'
     })
   } catch (err) {
     next(err)

@@ -27,6 +27,15 @@ class CrawlerResultEntryRepository {
       throw new Error('Failed to find an entry from given url')
     }
   }
+
+  static async deleteMany(options) {
+    try {
+      const result = await CrawlerResultEntryModel.deleteMany(options)
+      return result
+    } catch (err) {
+      throw new Error(`Failed to find an entry from given options: ${options}`)
+    }
+  }
 }
 
 module.exports = CrawlerResultEntryRepository

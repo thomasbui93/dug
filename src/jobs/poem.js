@@ -3,22 +3,23 @@ const getPoemContent = require('../services/poem/get_poem_content')
 const log = require('../services/logging').child({
   tag: 'poem_job',
 })
+
 const poemQueue = new Queue('poems', process.env.REDISCLOUD_URL)
 const LAG_TIME = 10 * 1000;
 
 const addPoemQueue = (searchKey, links) => {
-  poemQueue.add({searchKey, links})
+  poemQueue.add({ searchKey, links })
 }
 const lagTime = () => setTimeout(() => LAG_TIME)
 const isDuplicated = async (key) => {
   const activeJobs = await poemQueue.getActive()
-  const found = activeJobs.find(job => {
+  const found = activeJobs.find((job) => {
     const { searchKey } = job.data
     return searchKey === key
   })
   return typeof found !== 'undefined'
 }
-const poemQueueHandler = async (job, done) => {
+const poemQueueHandler = async (job) => {
   const { searchKey, links } = job.data
   const isDup = await isDuplicated(searchKey)
   if (isDup) return

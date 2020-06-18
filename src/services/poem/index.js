@@ -4,7 +4,7 @@ const log = require('../logging').child({
 })
 const getPoemContent = require('./get_poem_content')
 const getAllPoemLinks = require('./get_author_poem_links')
-const addPoemQueue = require('../../jobs/poem')
+const { addPoemQueue } = require('../../jobs/poem')
 
 const getRandomPoem = (poems) => {
   if (poems.length === 0) return false

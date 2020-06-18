@@ -1,0 +1,17 @@
+language: node_js
+
+cache: npm
+
+node_js:
+  - "10"
+  - "12"
+  - "14"
+
+services:
+  - mongodb
+
+script:
+  - cp .env.example .env
+  - npm test
+  - npm run lint
+  - npm run benchmark

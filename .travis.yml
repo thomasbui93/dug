@@ -14,4 +14,3 @@ script:
   - cp .env.example .env
   - npm test
   - npm run lint
-  - npm run benchmark

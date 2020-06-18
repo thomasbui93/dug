@@ -19,7 +19,7 @@ class CrawlerResultEntryRepository {
 
   static async retrieveByUrl(url) {
     try {
-      const entry = await CrawlerResultEntryModel.find({
+      const entry = await CrawlerResultEntryModel.findOne({
         url,
       })
       return entry

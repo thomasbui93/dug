@@ -26,6 +26,9 @@ module.exports = async (poemUrl) => {
         tags: ['poem_entry'],
       }
     })
+    if (content.indexOf('null') > -1) {
+      throw Error('Crawling has failed')
+    }
     await setCache(cacheKey, content)
 
     return content

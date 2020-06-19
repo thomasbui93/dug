@@ -16,6 +16,10 @@ module.exports = async (url, processor) => {
   }
   const body = await request.text()
   const { content, metadata, tags } = processor(body)
+  if (content.indexOf('null') !== 1) {
+    throw Error('Crawling has failed')
+  }
+
   const origin = getBaseSite(url)
 
   await crawlerResultEntryRepository.create({

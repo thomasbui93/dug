@@ -5,10 +5,18 @@ const log = require('../logging').child({
 
 module.exports = async () => {
   try {
-    const result = await crawlerResultEntryRepository.deleteMany({
+    const resultDuplicated = await crawlerResultEntryRepository.deleteMany({
+      "tags": [
+        "poem_author_links:Lý Bạch",
+        "https://www.thivien.net"
+      ]
+    })
+    const resultNullContent = await crawlerResultEntryRepository.deleteMany({
       content: /null/,
     })
-    log.info(`Remove invalid cached result: ${result}`)
+    const resultEmptyContent = await crawlerResultEntryRepository.deleteMany({
+      content: [],
+    })
   } catch (err) {
     log.error(err)
     throw Error('Failed to clean invalid cache')

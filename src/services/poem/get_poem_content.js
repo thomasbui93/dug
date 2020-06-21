@@ -1,17 +1,13 @@
 const { getPageElement } = require('../../helpers/crawler')
 const crawler = require('../crawler')
+const { memoize } = require('../cache/memoize')
 const log = require('../logging').child({
   tag: 'poem service',
 })
-const { setCache, getCache } = require('../cache')
 
-module.exports = async (poemUrl) => {
+const getPoemContent = async (poemUrl) => {
   try {
     if (!poemUrl) throw Error('Missing the url for fetching a poem')
-    const cacheKey = `poem:${poemUrl}`
-
-    const cache = await getCache(cacheKey)
-    if (!!cache) return cache
 
     const content = await crawler(poemUrl, (pageContent) => {
       let poem = getPageElement(pageContent, '.poem-view-separated')
@@ -26,13 +22,14 @@ module.exports = async (poemUrl) => {
         tags: ['poem_entry'],
       }
     })
-    await setCache(cacheKey, content)
 
     return content
   } catch (err) {
     log.error(err.message, {
       stack: err.stack,
     })
-    return false
+    throw Error(`Failed to get poem content from given url ${poemUrl}`)
   }
 }
+
+module.exports = memoize(getPoemContent, 'poem_content')

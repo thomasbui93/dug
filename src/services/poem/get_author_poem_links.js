@@ -1,9 +1,9 @@
 const crawler = require('../crawler')
 const { scrapLink, getPageElement } = require('../../helpers/crawler')
+const { memoize } = require('../cache/memoize')
 const log = require('../logging').child({
   tag: 'poem service',
 })
-const { setCache, getCache } = require('../cache')
 
 const getMainPage = async (searchTerm) => {
   try {
@@ -18,16 +18,12 @@ const getMainPage = async (searchTerm) => {
     log.error(err.message, {
       stack: err.stack,
     })
-    return false
+    throw Error('Failed to get main page from search keyword.')
   }
 }
 
-module.exports = async (searchTerm) => {
+const getAuthorPoemLinks = async (searchTerm) => {
   try {
-    const cacheKey = `poem_list:${searchTerm}`
-    const cache = await getCache(cacheKey)
-    if (!!cache) return cache
-
     const mainPage = await getMainPage(searchTerm)
     if (!mainPage) throw Error('Missing URL for fetching all poem')
 
@@ -41,13 +37,13 @@ module.exports = async (searchTerm) => {
       }
     })
 
-    await setCache(cacheKey, content)
-
     return content
   } catch (err) {
     log.error(err.message, {
       stack: err.stack,
     })
-    return []
+    throw Error('Failed to get author poem links.')
   }
 }
+
+module.exports = memoize(getAuthorPoemLinks, 'poem_author_links')

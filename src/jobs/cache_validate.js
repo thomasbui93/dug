@@ -17,3 +17,5 @@ cacheValidateQueue.process(async () => {
 module.exports.cacheValidate = () => {
   cacheValidateQueue.add()
 }
+
+module.exports.getCacheValidationJob = () => cacheValidateQueue

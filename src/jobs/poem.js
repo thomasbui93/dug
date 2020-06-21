@@ -1,5 +1,5 @@
 const Queue = require('bull')
-const getPoemContent = require('../services/poem/get_poem_content')
+const getPoemContent = require('../services/poem/get_poem_content');
 const log = require('../services/logging').child({
   tag: 'poem_job',
 })
@@ -45,3 +45,4 @@ poemQueue.process(poemQueueHandler)
 module.exports.addPoemQueue = addPoemQueue
 module.exports.isDuplicated = isDuplicated
 module.exports.poemQueueHandler = poemQueueHandler
+module.exports.getPoemJob = () => poemQueue

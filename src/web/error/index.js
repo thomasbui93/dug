@@ -17,5 +17,6 @@ module.exports = (err, req, res, next) => {
   res.status(500)
   return res.send({
     error: true,
+    message: err.message,
   })
 }

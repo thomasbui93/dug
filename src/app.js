@@ -11,6 +11,7 @@ module.exports = async () => {
 
   const app = express()
   router(app)
+  app.use(express.static('public'))
   app.use(errorHandler)
   app.use(notFoundHandler)
 

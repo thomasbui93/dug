@@ -6,16 +6,16 @@ const log = require('../services/logging').child({
 
 const cacheValidateQueue = new Queue('cache_validate_job', process.env.REDISCLOUD_URL)
 
-cacheValidateQueue.process(async () => {
+cacheValidateQueue.process(async (job) => {
   try {
-    await cacheClean()
+    await cacheClean(job.data)
   } catch (err) {
     log.error('Failed to clean invalid cache.')
   }
 })
 
-module.exports.cacheValidate = () => {
-  cacheValidateQueue.add()
+module.exports.cacheValidate = (author) => {
+  cacheValidateQueue.add(author)
 }
 
 module.exports.getCacheValidationJob = () => cacheValidateQueue

@@ -3,11 +3,20 @@ const log = require('../logging').child({
   tag: 'validate_cache',
 })
 
-module.exports = async () => {
+module.exports = async (author) => {
   try {
-    const result = await crawlerResultEntryRepository.deleteMany({
+    const query = author ? {
+      $or: [{
+        content: /null/,
+      }, {
+        tags: {
+          $all: [`poem_author_search:${author}`],
+        },
+      }],
+    } : {
       content: /null/,
-    })
+    }
+    const result = await crawlerResultEntryRepository.deleteMany(query)
     log.info(`Remove invalid cached result: ${result}`)
   } catch (err) {
     log.error(err)

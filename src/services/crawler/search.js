@@ -1,5 +1,4 @@
 const crawlerResultEntryModel = require('../../models/crawler/crawler_result_entry')
-const { memoize } = require('../cache/memoize')
 
 const getQuery = (tags) => (tags.length > 0 ? {
   tags: {
@@ -20,4 +19,4 @@ const crawlerResultSearch = async (tags = [], page = 1, size = 20) => {
   }
 }
 
-module.exports = memoize(crawlerResultSearch, 'crawler_result_search')
+module.exports = crawlerResultSearch

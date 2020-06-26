@@ -3,7 +3,7 @@ const poemService = require('../../services/poem')
 
 const router = Router()
 
-router.get('/', async (req, res, next) => {
+router.get('/random', async (req, res, next) => {
   const randomPoem = await poemService(req.query.author)
 
   try {

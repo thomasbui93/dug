@@ -6,7 +6,7 @@ const router = Router()
 
 router.post('/', async (req, res, next) => {
   try {
-    await cacheValidate()
+    await cacheValidate(req.query.author)
     res.json({
       status: true,
     })

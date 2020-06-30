@@ -5,7 +5,7 @@ const getCacheKey = (args) => args
   .map((arg) => JSON.stringify(arg))
   .join('_')
 
-const memoize = (fn, cacheSpace) => {
+const memoize = (fn, cacheSpace, ttl) => {
   if (!(fn instanceof Function)) {
     throw new Error('Memoize a non-functional argument')
   }
@@ -27,7 +27,7 @@ const memoize = (fn, cacheSpace) => {
     const result = await fn.apply(this, args)
 
     try {
-      await setCache(cacheKey, result)
+      await setCache(cacheKey, result, ttl)
 
       return result
     } catch (err) {

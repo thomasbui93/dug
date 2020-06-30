@@ -8,7 +8,6 @@ module.exports = () => {
   const REQUESTS = process.env.RATE_LIMITED_TOTAL ? process.env.RATE_LIMITED_TOTAL : 1000
 
   const now = new Date()
-  console.log(now - total.timestamp)
 
   if (now - total.timestamp < WINDOW_TIME) {
     if (total.count < REQUESTS) {

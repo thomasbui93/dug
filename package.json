@@ -9,9 +9,10 @@
   "engineStrict": true,
   "scripts": {
     "test": "jest --forceExit",
-    "lint": "npm run lint-src && npm run lint-test",
-    "lint-src": "eslint ./src/**",
-    "lint-test": "eslint --env jest ./test/**",
+    "lint": "npm run lint:src && npm run lint:test",
+    "lint:src": "eslint ./src/**",
+    "lint:test": "eslint --env jest ./test/**",
+    "lint:fix": "npm run lint:src -- --fix && npm run lint:test -- --fix",
     "dev": "nodemon src/index.js",
     "start": "NODE_ENV=production node src/index.js",
     "benchmark": "node test/benchmark.js"

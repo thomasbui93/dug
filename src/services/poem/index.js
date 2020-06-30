@@ -5,6 +5,7 @@ const log = require('../logging').child({
 const getPoemContent = require('./get_poem_content')
 const getAllPoemLinks = require('./get_author_poem_links')
 const { addPoemQueue } = require('../../jobs/poem')
+const { memoize } = require('../cache/memoize')
 
 const getRandomPoem = (poems) => {
   if (poems.length === 0) return false
@@ -12,7 +13,7 @@ const getRandomPoem = (poems) => {
   return `${process.env.BASE_POEM_URL}/${poems[randomLink]}`
 }
 
-module.exports = async (searchTerm = process.env.AUTHOR) => {
+module.exports = memoize(async (searchTerm = process.env.AUTHOR) => {
   try {
     const poems = await getAllPoemLinks(searchTerm)
     addPoemQueue(searchTerm, poems)
@@ -31,4 +32,4 @@ module.exports = async (searchTerm = process.env.AUTHOR) => {
       link: false,
     }
   }
-}
+}, 'random_poem', 1000 * 60)

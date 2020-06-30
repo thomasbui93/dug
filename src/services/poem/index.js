@@ -33,4 +33,3 @@ module.exports = memoize(async (searchTerm = process.env.AUTHOR) => {
     }
   }
 }, 'random_poem', 1000 * 60)
-

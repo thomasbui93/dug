@@ -16,15 +16,7 @@ const getLocationId = async (ip) => {
 const getWeather = async (ip) => {
   const woeid = await getLocationId(ip)
   const data = await fetch(`${process.env.WEATHER_API_BASE_URL}/location/${woeid}`)
-  const weather = data.consolidated_weather
-    .reduce((acc, item) => {
-      if (acc instanceof Set) {
-        acc.add(item.weather_state_name)
-        return acc
-      }
-      return new Set([acc.weather_state_name])
-    })
-  return Array.from(weather)
+  return data.consolidated_weather.map((json) => json.weather_state_name)
 }
 
 module.exports = memoize(getWeather, 'get_weather', 1000 * 60 * 60)

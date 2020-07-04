@@ -13,6 +13,7 @@ module.exports = (err, req, res, next) => {
     body: req.body,
     stack: err.stack,
   })
+  console.log(err)
 
   res.status(500)
   return res.send({

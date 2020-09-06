@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const { config } = require('dotenv')
 const mongoSetup = require('./setup/mongoose')
 const errorHandler = require('./web/error')
@@ -11,6 +12,7 @@ module.exports = async () => {
   await mongoSetup()
 
   const app = express()
+  app.use(cors())
   app.use(rateLimited)
   router(app)
   app.use(express.static('public'))

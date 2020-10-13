@@ -3,6 +3,12 @@ const getSequelize = require('../../bootstrap/sequelize')
 
 const sequelize = getSequelize()
 
+function nextExpiry() {
+  const d = new Date()
+  d.setMinutes(d.getMinutes() + 30)
+  return d
+}
+
 const PageCache = sequelize.define('PageCache', {
   url: {
     type: DataTypes.STRING,
@@ -17,7 +23,13 @@ const PageCache = sequelize.define('PageCache', {
     allowNull: false
   },
   type: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  stealAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: nextExpiry()
   }
 }, {
   tableName: 'page_caches',

@@ -7,6 +7,7 @@ module.exports = async (url, processor) => {
       url
     }
   })
+
   if (page) return content
 
   const request = await fetch(url, {

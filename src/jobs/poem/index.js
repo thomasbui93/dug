@@ -6,7 +6,7 @@ const logger = require('../../helpers/logger')
 
 const log = logger.child('poem_job')
 
-async function poemJob(authorName) {
+async function fetchPoem(authorName) {
   try {
     await PageCache.sync()
     const allPoemLinks = await getAllPoemLinks(authorName)
@@ -14,6 +14,17 @@ async function poemJob(authorName) {
     const results = await Promise.all(promises)
 
     return results.length
+  } catch (err) {
+    log.error(err, 'Poems fetching job by author failed')
+    throw new PoemJobFailure(`Poems fetching job by author failed: ${err.message}`)
+  }
+}
+
+async function poemJob(authors) {
+  try {
+    const authors = authors.split(',')
+    const promises = authors.map(author => fetchPoem(author))
+    await Promise.all(promises)
   } catch (err) {
     log.error(err, 'Poems fetching job failed')
     throw new PoemJobFailure(`Poems fetching job failed: ${err.message}`)

@@ -22,8 +22,7 @@ async function fetchPoem(authorName) {
 
 async function poemJob(authors) {
   try {
-    const authors = authors.split(',')
-    const promises = authors.map(author => fetchPoem(author))
+    const promises = authors.split(',').map(author => fetchPoem(author))
     await Promise.all(promises)
   } catch (err) {
     log.error(err, 'Poems fetching job failed')

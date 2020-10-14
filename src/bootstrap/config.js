@@ -1,4 +1,5 @@
 const { config } = require('dotenv')
+
 let output
 
 module.exports = function setupConfig() {

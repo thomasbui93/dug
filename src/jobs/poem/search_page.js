@@ -1,5 +1,9 @@
+const AuthorSearchFailure = require('../../exceptions/jobs/poem/AuthorSearchFailure')
 const { scrapLink } = require('../../helpers/crawler')
 const crawler = require('../helpers/crawler')
+const logger = require('../../helpers/logger')
+
+const log = logger.child('poem_author_search')
 
 const getSearchPage = async (searchTerm) => {
   try {
@@ -7,13 +11,13 @@ const getSearchPage = async (searchTerm) => {
     const content = await crawler(searchUrl, (body) => ({
       content: scrapLink(body),
       type: 'poem',
-      key: `search_page__${searchTerm}`
+      key: `search_page__${searchTerm}`,
     }))
 
     return content
   } catch (err) {
-    console.log(err)
-    throw Error('Failed to get main page from search keyword.')
+    log.error(err, 'Failed to search author page.')
+    throw new AuthorSearchFailure(err.message)
   }
 }
 

@@ -1,7 +1,7 @@
-const bootstrap = require("./bootstrap");
-const startAllJobs = require("./jobs")
+const bootstrap = require('./bootstrap');
+const startAllJobs = require('./jobs')
 
-async function start () {
+async function start() {
   await bootstrap()
   startAllJobs()
 }

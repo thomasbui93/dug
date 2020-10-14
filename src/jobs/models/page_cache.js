@@ -12,28 +12,28 @@ function nextExpiry() {
 const PageCache = sequelize.define('PageCache', {
   url: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   key: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   content: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: false,
   },
   type: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   stealAt: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: nextExpiry()
-  }
+    defaultValue: nextExpiry(),
+  },
 }, {
   tableName: 'page_caches',
-  timestamps: true
+  timestamps: true,
 });
 
 module.exports = PageCache
